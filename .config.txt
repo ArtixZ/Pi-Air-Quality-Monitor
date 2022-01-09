@@ -1,4 +1,4 @@
 [MQTT]
 channelID = 
 apiKey = 
-mqttHost = 
+mqttHost = mqtt.thingspeak.com
