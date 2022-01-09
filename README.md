@@ -27,3 +27,4 @@
 ===========
 
 Credit to: https://github.com/Mjrovai/Python4DS/tree/master/RPi_Air_Quality_Sensor
+More details: https://www.instructables.com/A-Low-cost-IoT-Air-Quality-Monitor-Based-on-Raspbe/
