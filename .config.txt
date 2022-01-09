@@ -1,0 +1,4 @@
+[MQTT]
+channelID = ""
+apiKey = ""
+mqttHost = ""
