@@ -19,3 +19,11 @@
 - Read pm2.5, pm10. Converts them into AQI index.
 - Upload data to IoT platform (e.g. https://thingspeak.com).
 - Data reads and uploads every minute.
+
+
+
+===========
+
+===========
+
+Credits to: https://github.com/Mjrovai/Python4DS/tree/master/RPi_Air_Quality_Sensor
