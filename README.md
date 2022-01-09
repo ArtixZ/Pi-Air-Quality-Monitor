@@ -18,3 +18,4 @@
 ## Features
 - Read pm2.5, pm10. Converts them into AQI index.
 - Upload data to IoT platform (e.g. https://thingspeak.com).
+- Data reads and uploads every minute.
