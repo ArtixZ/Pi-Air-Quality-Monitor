@@ -26,4 +26,4 @@
 
 ===========
 
-Credits to: https://github.com/Mjrovai/Python4DS/tree/master/RPi_Air_Quality_Sensor
+Credit to: https://github.com/Mjrovai/Python4DS/tree/master/RPi_Air_Quality_Sensor
