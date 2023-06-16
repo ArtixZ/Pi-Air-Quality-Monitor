@@ -7,6 +7,7 @@ import aqi
 import configparser
 
 from sds011 import *
+
 # pip install python-aqi pyserial psutil
 # sudo pip install paho-mqtt
 
@@ -15,14 +16,17 @@ parser.read(".config.txt")
 
 channelID = parser.get("MQTT", "channelID")
 apiKey = parser.get("MQTT", "apiKey")
-topic = "channels/" + channelID + "/publish/" + apiKey
+topic = "channels/" + channelID + "/publish"
 mqttHost = parser.get("MQTT", "mqttHost")
+clientID = parser.get("MQTT", "client_id")
+username = parser.get("MQTT", "username")
+pswd = parser.get("MQTT", "password")
 
 
 # Conventional TCP socket on port 1883.
 # This connection method is the simplest and requires the least system resources.
-tTransport = "tcp"
-tPort = 1883
+tTransport = "websockets"
+tPort = 80
 tTLS = None
 
 
@@ -42,8 +46,8 @@ def get_data(n=3):
         pmt_2_5 = pmt_2_5 + x[0]
         pmt_10 = pmt_10 + x[1]
         time.sleep(2)
-    pmt_2_5 = round(pmt_2_5/n, 1)
-    pmt_10 = round(pmt_10/n, 1)
+    pmt_2_5 = round(pmt_2_5 / n, 1)
+    pmt_10 = round(pmt_10 / n, 1)
     sensor.sleep(sleep=True)
     time.sleep(2)
     return pmt_2_5, pmt_10
@@ -62,22 +66,40 @@ def save_log():
         pmt_2_5, pmt_10 = get_data()
         aqi_2_5, aqi_10 = conv_aqi(pmt_2_5, pmt_10)
         dt = datetime.now()
-        log.write("{},{},{},{},{}\n".format(
-            dt, pmt_2_5, aqi_2_5, pmt_10, aqi_10))
+        log.write("{},{},{},{},{}\n".format(dt, pmt_2_5, aqi_2_5, pmt_10, aqi_10))
     log.close()
 
 
-while(True):
+while True:
     pmt_2_5, pmt_10 = get_data()
     aqi_2_5, aqi_10 = conv_aqi(pmt_2_5, pmt_10)
-    tPayload = "field1=" + str(pmt_2_5) + "&field2=" + str(aqi_2_5) + \
-        "&field3=" + str(pmt_10) + "&field4=" + str(aqi_10)
+    tPayload = (
+        "field1="
+        + str(pmt_2_5)
+        + "&field2="
+        + str(aqi_2_5)
+        + "&field3="
+        + str(pmt_10)
+        + "&field4="
+        + str(aqi_10)
+    )
     try:
-        publish.single(topic, payload=tPayload, hostname=mqttHost,
-                       port=tPort, tls=tTLS, transport=tTransport)
+        publish.single(
+            topic,
+            payload=tPayload,
+            hostname=mqttHost,
+            port=tPort,
+            tls=tTLS,
+            transport=tTransport,
+            client_id=clientID,
+            auth={
+                "username": username,
+                "password": pswd,
+            },
+        )
         save_log()
-    except (KeyboardInterrupt):
+    except KeyboardInterrupt:
         break
-    except:
+    except Exception as e:
         print("[INFO] Failure in sending data")
     time.sleep(60)
