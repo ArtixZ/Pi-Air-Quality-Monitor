@@ -2,7 +2,6 @@ import time
 from datetime import datetime
 import os
 import paho.mqtt.publish as publish
-import psutil
 import aqi
 import configparser
 
