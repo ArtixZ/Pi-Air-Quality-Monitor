@@ -15,7 +15,6 @@ parser = configparser.ConfigParser()
 parser.read(".config.txt")
 
 channelID = parser.get("MQTT", "channelID")
-apiKey = parser.get("MQTT", "apiKey")
 topic = "channels/" + channelID + "/publish"
 mqttHost = parser.get("MQTT", "mqttHost")
 clientID = parser.get("MQTT", "client_id")
